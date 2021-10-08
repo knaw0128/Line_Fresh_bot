@@ -8,13 +8,11 @@ if os.getenv('DEVELOPMENT') is not None:
     load_dotenv(dotenv_path='../.env')
 
 import sys
-import random
+import random, csv
 
 from flask import Flask, request, abort
 from linebot import *
-from linebot.exceptions import (
-    InvalidSignatureError
-)
+from linebot.exceptions import *
 from linebot.models import *
 
 app = Flask(__name__)
@@ -52,7 +50,6 @@ def callback():
     return 'OK'
 
 
-# Echo function
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     action = event.message.text
@@ -64,37 +61,116 @@ def message_text(event):
                 title='鐵花村嚮導',
                 text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
-                    MessageAction(
+                    PostbackAction(
                         label='Eating',
-                        text='$$Eating$$'
+                        data='$$Eating$$'
                     ),
-                    MessageAction(
+                    PostbackAction(
                         label='Drinking',
-                        text='$$Drinking$$'
+                        data='$$Drinking$$'
                     ),
-                    MessageAction(
+                    PostbackAction(
                         label='Dressing',
-                        text='$$Dressing$$'
+                        data='$$Dressing$$'
                     ),
-                    MessageAction(
+                    PostbackAction(
                         label='Hotels',
-                        text='$$Hotels$$'
+                        data='$$Hotels$$'
+                    )],
+                default_action=URIAction(
+                    uri="https://www.facebook.com/tiehua/"
+                )
+            )
+        )
+    elif '優惠' in action:
+        output = TemplateSendMessage(
+            alt_text='TemplateSendMessage template',
+            template = CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        title = '好食券',
+                        text = '您還有        點',
+                        actions=[
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        title = '國旅券',
+                        text = '您還有        點',
+                        actions=[
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        title = '動滋券',
+                        text = '您還有        點',
+                        actions=[
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                        ]
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        title = '藝fun券',
+                        text = '您還有        點',
+                        actions=[
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='Eating',
+                                data='$$Eating$$'
+                            ),
+                        ]
                     ),
                 ]
             )
         )
-    elif action == "$$Eating$$":
+    else:
+        output = TextSendMessage(text="公三小聽不懂啦")
+
+    line_bot_api.reply_message(
+        event.reply_token,
+        output
+    )
+
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    action = event.postback.data
+    if action == "$$Eating$$":
         links = {
             "炒上鮮平價熱炒" : "https://spot.line.me/detail/486251123917723842",
             "何家寨土雞城" : "https://spot.line.me/detail/486257421489019364",
             "圓圓小吃店" : "https://spot.line.me/detail/486257089434360139",
-
         }
         repo = [
             "炒上鮮平價熱炒",
             "何家寨土雞城",
             "圓圓小吃店",
-
         ]
         now = random.randint(0,2)
         replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
@@ -105,13 +181,13 @@ def message_text(event):
         output = TextSendMessage(text="賣穿的")
     elif action == "$$Hotels$$":
         output = TextSendMessage(text="賣住的")
-    else:
-        output = TextSendMessage(text="公三小聽不懂啦")
-
+    
     line_bot_api.reply_message(
         event.reply_token,
         output
     )
+
+
 
 # CSV Example
 # import csv
