@@ -32,20 +32,23 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
-food_list=[]
+food_list = []
 with open("food.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for food in rows:
         food_list.append(food)
-drink_list = []
-
 
 origin_list = []
-
-
+with open("origin.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for origin in rows:
+        origin_list.append(origin)
 
 hotel_list = []
-
+with open("hotel.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for hotel in rows:
+        hotel_list.append(hotel)
 
 # Build drink list, origin_list, hotel list here 
 # Same way as food_list 
@@ -82,12 +85,8 @@ def message_text(event):
                 text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
                     PostbackAction(
-                        label='美食',
-                        data='$$美食$$'
-                    ),
-                    PostbackAction(
-                        label='飲品',
-                        data='$$飲品$$'
+                        label='美食&飲品',
+                        data='$$美食&飲品$$'
                     ),
                     PostbackAction(
                         label='原創商品',
@@ -176,13 +175,9 @@ def message_text(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     action = event.postback.data
-    if action == "$$美食$$":
+    if action == "$$美食&飲品$$":
         rand = random.randint(1, len(food_list)+1)
         replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
-        output = TextSendMessage(text=replyContent)
-    elif action == "$$飲品$$":
-        rand = random.randint(1, len(drink_list)+1)
-        replyContent = "今天我推薦來點" + drink_list[rand][0] +"\n" +drink_list[rand][1]
         output = TextSendMessage(text=replyContent)
     elif action == "$$原創商品$$":
         rand = random.randint(1, len(origin_list)+1)
@@ -192,6 +187,7 @@ def handle_postback(event):
         rand = random.randint(1, len(hotel_list)+1)
         replyContent = "今天我推薦來點" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
         output = TextSendMessage(text=replyContent)
+
     
     line_bot_api.reply_message(
         event.reply_token,
