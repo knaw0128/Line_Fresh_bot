@@ -73,7 +73,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     action = event.message.text
-    if action=="start":
+    if action=="Start" or action=="start":
         output = TemplateSendMessage(
             alt_text="hello",
             template=ButtonsTemplate(
