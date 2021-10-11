@@ -47,7 +47,7 @@ origin_list = []
 hotel_list = []
 
 
-# Build drink list, dress list, hotel list here 
+# Build drink list, origin_list, hotel list here 
 # Same way as food_list 
 # Remember to save csv in UTF-8
 # Also remember to change csv format as food.csv
