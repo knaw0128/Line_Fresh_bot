@@ -61,20 +61,24 @@ def message_text(event):
                 text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
                     PostbackAction(
-                        label='Eating',
-                        data='$$Eating$$'
+                        label='美食'
+                        data='$$美食$$'
                     ),
                     PostbackAction(
-                        label='Drinking',
-                        data='$$Drinking$$'
+                        label='飲品',
+                        data='$$飲品$$'
                     ),
                     PostbackAction(
-                        label='Dressing',
-                        data='$$Dressing$$'
+                        label='原創商品',
+                        data='$$原創商品$$'
                     ),
                     PostbackAction(
-                        label='Hotels',
-                        data='$$Hotels$$'
+                        label='旅館',
+                        data='$$旅館$$'
+                    ),
+                    PostbackAction(
+                        label='音樂聚落',
+                        data='$$音樂聚落$$'
                     )],
                 default_action=URIAction(
                     uri="https://www.facebook.com/tiehua/"
@@ -158,7 +162,7 @@ def message_text(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     action = event.postback.data
-    if action == "$$Eating$$":
+    if action == "$$美食$$":
         rows_list = []
         with open(os.path.abspath("food.csv"), newline='') as csvfile:
             rows = csv.reader(csvfile, delimiter=',')
@@ -174,12 +178,15 @@ def handle_postback(event):
         # replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
         # output = TextSendMessage(text=replyContent)
 
-    elif action == "$$Drinking$$":
+    elif action == "$$飲品$$":
         output = TextSendMessage(text="賣喝的")
-    elif action == "$$Dressing$$":
+    elif action == "$$原創商品$$":
         output = TextSendMessage(text="賣穿的")
-    elif action == "$$Hotels$$":
+    elif action == "$$旅館$$":
         output = TextSendMessage(text="賣住的")
+    elif action == "$$音樂聚落$$":
+        replyContent = "由此查看演出時間" + "\n" + "http://www.tiehua.com.tw/calendar.php?p=5"
+        output = TextSendMessage(text=replyContent)
     
     line_bot_api.reply_message(
         event.reply_token,
