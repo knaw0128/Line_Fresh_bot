@@ -39,7 +39,7 @@ with open("food.csv", encoding='UTF-8') as csvfile:
         food_list.append(food)
 
 origin_list = []
-with open("orgin.csv", encoding='UTF-8') as csvfile:
+with open("origin.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for origin in rows:
         origin_list.append(origin)
