@@ -50,11 +50,6 @@ with open("hotel.csv", encoding='UTF-8') as csvfile:
     for hotel in rows:
         hotel_list.append(hotel)
 
-# Build drink list, origin_list, hotel list here 
-# Same way as food_list 
-# Remember to save csv in UTF-8
-# Also remember to change csv format as food.csv
-# first line for 店名 and line 熱點
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -96,6 +91,10 @@ def message_text(event):
                         label='旅館',
                         data='$$旅館$$'
                     ),
+                    URIAction(
+                        label = '表演時程表',
+                        uri="http://www.tiehua.com.tw/calendar.php?p="
+                    )
                 ],
                 default_action=URIAction(
                     uri="https://www.facebook.com/tiehua/"
