@@ -58,7 +58,7 @@ def message_text(event):
             template=ButtonsTemplate(
                 thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                 title='鐵花村嚮導',
-                text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
+                text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧~~',
                 actions=[
                     PostbackAction(
                         label='Eating',

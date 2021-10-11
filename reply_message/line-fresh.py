@@ -159,19 +159,21 @@ def message_text(event):
 def handle_postback(event):
     action = event.postback.data
     if action == "$$Eating$$":
-        links = {
-            "炒上鮮平價熱炒" : "https://spot.line.me/detail/486251123917723842",
-            "何家寨土雞城" : "https://spot.line.me/detail/486257421489019364",
-            "圓圓小吃店" : "https://spot.line.me/detail/486257089434360139",
-        }
-        repo = [
-            "炒上鮮平價熱炒",
-            "何家寨土雞城",
-            "圓圓小吃店",
-        ]
-        now = random.randint(0,2)
-        replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
-        output = TextSendMessage(text=replyContent)
+        rows_list = []
+        with open(os.path.abspath("food.csv"), newline='') as csvfile:
+            rows = csv.reader(csvfile, delimiter=',')
+            for row in rows:
+                rows_list.append(row)
+
+        rand = random.randint(0,4)
+        line_bot_api.reply_message(
+            event.reply_token,
+            output = TextSendMessage(text=str(rows_list[rand]))
+        )
+
+        # replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
+        # output = TextSendMessage(text=replyContent)
+
     elif action == "$$Drinking$$":
         output = TextSendMessage(text="賣喝的")
     elif action == "$$Dressing$$":
@@ -184,22 +186,53 @@ def handle_postback(event):
         output
     )
 
+# @handler.add(PostbackEvent)
+# def handle_postback(event):
+#     action = event.postback.data
+#     if action == "$$Eating$$":
+#         links = {
+#             "炒上鮮平價熱炒" : "https://spot.line.me/detail/486251123917723842",
+#             "何家寨土雞城" : "https://spot.line.me/detail/486257421489019364",
+#             "圓圓小吃店" : "https://spot.line.me/detail/486257089434360139",
+#         }
+#         repo = [
+#             "炒上鮮平價熱炒",
+#             "何家寨土雞城",
+#             "圓圓小吃店",
+#         ]
+#         now = random.randint(0,2)
+#         replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
+#         output = TextSendMessage(text=replyContent)
+#     elif action == "$$Drinking$$":
+#         output = TextSendMessage(text="賣喝的")
+#     elif action == "$$Dressing$$":
+#         output = TextSendMessage(text="賣穿的")
+#     elif action == "$$Hotels$$":
+#         output = TextSendMessage(text="賣住的")
+    
+#     line_bot_api.reply_message(
+#         event.reply_token,
+#         output
+#     )
 
 
-# CSV Example
+
+# # CSV Example
 # import csv
 # @handler.add(MessageEvent, message=TextMessage)
 # def message_text(event):
-#     rows_list = []
-#     with open(os.path.abspath("maskdata.csv"), newline='') as csvfile:
-#         rows = csv.reader(csvfile, delimiter=',')
-#         for row in rows:
-#             rows_list.append(row)
-#
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text=str(rows_list[1]))
-#     )
+#     action = event.message.text
+#     if action=="showdata":
+#         rows_list = []
+#         with open(os.path.abspath("guide-data.csv"), newline='') as csvfile:
+#             rows = csv.reader(csvfile, delimiter=',')
+#             for row in rows:
+#                 rows_list.append(row)
+
+#         line_bot_api.reply_message(
+#             event.reply_token,
+#             TextSendMessage(text=str(rows_list[1]))
+#         )
 
 
 if __name__ == "__main__":
