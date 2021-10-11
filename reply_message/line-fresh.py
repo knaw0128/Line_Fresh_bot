@@ -37,8 +37,14 @@ with open("food.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for food in rows:
         food_list.append(food)
+drink_list = []
 
 
+origin_list = []
+
+
+
+hotel_list = []
 
 
 # Build drink list, dress list, hotel list here 
@@ -46,9 +52,6 @@ with open("food.csv", encoding='UTF-8') as csvfile:
 # Remember to save csv in UTF-8
 # Also remember to change csv format as food.csv
 # first line for 店名 and line 熱點
-
-
-
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -72,28 +75,29 @@ def message_text(event):
     action = event.message.text
     if action=="start":
         output = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text="hello",
             template=ButtonsTemplate(
                 thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                 title='鐵花村嚮導',
                 text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
                     PostbackAction(
-                        label='Eating',
-                        data='$$Eating$$'
+                        label='美食',
+                        data='$$美食$$'
                     ),
                     PostbackAction(
-                        label='Drinking',
-                        data='$$Drinking$$'
+                        label='飲品',
+                        data='$$飲品$$'
                     ),
                     PostbackAction(
-                        label='Dressing',
-                        data='$$Dressing$$'
+                        label='原創商品',
+                        data='$$原創商品$$'
                     ),
                     PostbackAction(
-                        label='Hotels',
-                        data='$$Hotels$$'
-                    )],
+                        label='旅館',
+                        data='$$旅館$$'
+                    ),
+                ],
                 default_action=URIAction(
                     uri="https://www.facebook.com/tiehua/"
                 )
@@ -117,8 +121,7 @@ def message_text(event):
                                 label='Eating',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '國旅券',
@@ -132,8 +135,7 @@ def message_text(event):
                                 label='Eating',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '動滋券',
@@ -147,8 +149,7 @@ def message_text(event):
                                 label='Eating',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '藝fun券',
@@ -162,8 +163,7 @@ def message_text(event):
                                 label='Eating',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                 ]
             )
         )
@@ -176,17 +176,22 @@ def message_text(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     action = event.postback.data
-    if action == "$$Eating$$":
-        rand = random.randint(1, len(food_list))
+    if action == "$$美食$$":
+        rand = random.randint(1, len(food_list)+1)
         replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
         output = TextSendMessage(text=replyContent)
-
-    elif action == "$$Drinking$$":
-        output = TextSendMessage(text="賣喝的")
-    elif action == "$$Dressing$$":
-        output = TextSendMessage(text="賣穿的")
-    elif action == "$$Hotels$$":
-        output = TextSendMessage(text="賣住的")
+    elif action == "$$飲品$$":
+        rand = random.randint(1, len(drink_list)+1)
+        replyContent = "今天我推薦來點" + drink_list[rand][0] +"\n" +drink_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+    elif action == "$$原創商品$$":
+        rand = random.randint(1, len(origin_list)+1)
+        replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+    elif action == "$$旅館$$":
+        rand = random.randint(1, len(hotel_list)+1)
+        replyContent = "今天我推薦來點" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
+        output = TextSendMessage(text=replyContent)
     
     line_bot_api.reply_message(
         event.reply_token,
