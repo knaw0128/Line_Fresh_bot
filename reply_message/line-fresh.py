@@ -61,7 +61,7 @@ def message_text(event):
                 text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
                     PostbackAction(
-                        label='美食'
+                        label='美食',
                         data='$$美食$$'
                     ),
                     PostbackAction(
