@@ -187,19 +187,21 @@ def handle_postback(event):
 
 
 # CSV Example
-# import csv
-# @handler.add(MessageEvent, message=TextMessage)
-# def message_text(event):
-#     rows_list = []
-#     with open(os.path.abspath("maskdata.csv"), newline='') as csvfile:
-#         rows = csv.reader(csvfile, delimiter=',')
-#         for row in rows:
-#             rows_list.append(row)
-#
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text=str(rows_list[1]))
-#     )
+import csv
+@handler.add(MessageEvent, message=TextMessage)
+def message_text(event):
+    action = event.message.text
+    if action=="showdata":
+        rows_list = []
+        with open(os.path.abspath("guide-data.csv"), newline='') as csvfile:
+            rows = csv.reader(csvfile, delimiter=',')
+            for row in rows:
+                rows_list.append(row)
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=str(rows_list[1]))
+        )
 
 
 if __name__ == "__main__":
