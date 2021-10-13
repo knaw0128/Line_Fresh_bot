@@ -105,9 +105,9 @@ def message_text(event):
             template = CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        thumbnail_image_url='https://imgur.com/mhO5Tvf',
                         title = '好食券',
-                        text = '您還有        點',
+                        text = '您剩餘    張',
                         actions=[
                             PostbackAction(
                                 label='使用',
@@ -119,9 +119,9 @@ def message_text(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        thumbnail_image_url='https://imgur.com/1bAcDW7',
                         title = '國旅券',
-                        text = '您還有        點',
+                        text = '您剩餘    張',
                         actions=[
                             PostbackAction(
                                 label='使用',
@@ -133,9 +133,9 @@ def message_text(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        thumbnail_image_url='https://imgur.com/undefined',
                         title = '動滋券',
-                        text = '您還有        點',
+                        text = '您剩餘    張',
                         actions=[
                             PostbackAction(
                                 label='使用',
@@ -147,9 +147,9 @@ def message_text(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                        thumbnail_image_url='https://imgur.com/a/KCT1qKY',
                         title = '藝fun券',
-                        text = '您還有        點',
+                        text = '您剩餘    張',
                         actions=[
                             PostbackAction(
                                 label='使用',

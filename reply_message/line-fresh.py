@@ -86,8 +86,8 @@ def message_text(event):
                         data='$$原創商品$$'
                     ),
                     PostbackAction(
-                        label='旅館',
-                        data='$$旅館$$'
+                        label='優惠券',
+                        data='$$優惠券$$'
                     ),
                     URIAction(
                         label = '表演時程表',
@@ -99,71 +99,7 @@ def message_text(event):
                 )
             )
         )
-    elif action == '優惠券':
-        output = TemplateSendMessage(
-            alt_text='TemplateSendMessage template',
-            template = CarouselTemplate(
-                columns=[
-                    CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
-                        title = '好食券',
-                        text = '您還有        點',
-                        actions=[
-                            PostbackAction(
-                                label='使用',
-                                data='$$Eating$$'
-                            ),
-                            PostbackAction(
-                                label='儲存',
-                                data='$$Eating$$'
-                            ),
-                        ]),
-                    CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
-                        title = '國旅券',
-                        text = '您還有        點',
-                        actions=[
-                            PostbackAction(
-                                label='使用',
-                                data='$$Eating$$'
-                            ),
-                            PostbackAction(
-                                label='儲存',
-                                data='$$Eating$$'
-                            ),
-                        ]),
-                    CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
-                        title = '動滋券',
-                        text = '您還有        點',
-                        actions=[
-                            PostbackAction(
-                                label='使用',
-                                data='$$Eating$$'
-                            ),
-                            PostbackAction(
-                                label='儲存',
-                                data='$$Eating$$'
-                            ),
-                        ]),
-                    CarouselColumn(
-                        thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
-                        title = '藝fun券',
-                        text = '您還有        點',
-                        actions=[
-                            PostbackAction(
-                                label='使用',
-                                data='$$Eating$$'
-                            ),
-                            PostbackAction(
-                                label='儲存',
-                                data='$$Eating$$'
-                            ),
-                        ]),
-                ]
-            )
-        )
-    
+            
     line_bot_api.reply_message(
         event.reply_token,
         output
@@ -180,10 +116,70 @@ def handle_postback(event):
         rand = random.randint(1, len(origin_list))
         replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
         output = TextSendMessage(text=replyContent)
-    elif action == "$$旅館$$":
-        rand = random.randint(1, len(hotel_list))
-        replyContent = "今天我推薦住在" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
-        output = TextSendMessage(text=replyContent)
+    elif action == "$$優惠券$$":
+        output = TemplateSendMessage(
+            alt_text='TemplateSendMessage template',
+            template = CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url='https://imgur.com/mhO5Tvf',
+                        title = '好食券',
+                        text = '您剩餘    張',
+                        actions=[
+                            PostbackAction(
+                                label='使用',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='儲存',
+                                data='$$Eating$$'
+                            ),
+                        ]),
+                    CarouselColumn(
+                        thumbnail_image_url='https://imgur.com/1bAcDW7',
+                        title = '國旅券',
+                        text = '您剩餘    張',
+                        actions=[
+                            PostbackAction(
+                                label='使用',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='儲存',
+                                data='$$Eating$$'
+                            ),
+                        ]),
+                    CarouselColumn(
+                        thumbnail_image_url='https://imgur.com/undefined',
+                        title = '動滋券',
+                        text = '您剩餘    張',
+                        actions=[
+                            PostbackAction(
+                                label='使用',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='儲存',
+                                data='$$Eating$$'
+                            ),
+                        ]),
+                    CarouselColumn(
+                        thumbnail_image_url='https://imgur.com/a/KCT1qKY',
+                        title = '藝fun券',
+                        text = '您剩餘    張',
+                        actions=[
+                            PostbackAction(
+                                label='使用',
+                                data='$$Eating$$'
+                            ),
+                            PostbackAction(
+                                label='儲存',
+                                data='$$Eating$$'
+                            ),
+                        ]),
+                ]
+            )
+        )
 
     
     line_bot_api.reply_message(
