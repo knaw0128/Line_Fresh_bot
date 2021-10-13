@@ -31,19 +31,19 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 food_list = []
-with open("food.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/food.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for food in rows:
         food_list.append(food)
 
 origin_list = []
-with open("origin.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/origin.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for origin in rows:
         origin_list.append(origin)
 
 hotel_list = []
-with open("hotel.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/hotel.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for hotel in rows:
         hotel_list.append(hotel)

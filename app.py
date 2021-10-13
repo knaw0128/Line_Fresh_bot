@@ -31,19 +31,19 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 food_list = []
-with open("food.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/food.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for food in rows:
         food_list.append(food)
 
 origin_list = []
-with open("origin.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/origin.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for origin in rows:
         origin_list.append(origin)
 
 hotel_list = []
-with open("hotel.csv", encoding='UTF-8') as csvfile:
+with open("./csv_file/hotel.csv", encoding='UTF-8') as csvfile:
     rows = csv.reader(csvfile)
     for hotel in rows:
         hotel_list.append(hotel)
@@ -86,8 +86,8 @@ def message_text(event):
                         data='$$原創商品$$'
                     ),
                     PostbackAction(
-                        label='旅館',
-                        data='$$旅館$$'
+                        label='優惠券',
+                        data='$$優惠券$$'
                     ),
                     URIAction(
                         label = '表演時程表',
@@ -99,7 +99,24 @@ def message_text(event):
                 )
             )
         )
-    elif action == '優惠券':
+            
+    line_bot_api.reply_message(
+        event.reply_token,
+        output
+    )
+
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    action = event.postback.data
+    if action == "$$美食&飲品$$":
+        rand = random.randint(1, len(food_list))
+        replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+    elif action == "$$原創商品$$":
+        rand = random.randint(1, len(origin_list))
+        replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+    elif action == "$$優惠券$$":
         output = TemplateSendMessage(
             alt_text='TemplateSendMessage template',
             template = CarouselTemplate(
@@ -163,27 +180,6 @@ def message_text(event):
                 ]
             )
         )
-    
-    line_bot_api.reply_message(
-        event.reply_token,
-        output
-    )
-
-@handler.add(PostbackEvent)
-def handle_postback(event):
-    action = event.postback.data
-    if action == "$$美食&飲品$$":
-        rand = random.randint(1, len(food_list))
-        replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
-        output = TextSendMessage(text=replyContent)
-    elif action == "$$原創商品$$":
-        rand = random.randint(1, len(origin_list))
-        replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
-        output = TextSendMessage(text=replyContent)
-    elif action == "$$旅館$$":
-        rand = random.randint(1, len(hotel_list))
-        replyContent = "今天我推薦住在" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
-        output = TextSendMessage(text=replyContent)
 
     
     line_bot_api.reply_message(
