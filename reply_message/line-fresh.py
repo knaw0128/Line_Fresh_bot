@@ -1,8 +1,6 @@
 import os
 from types import BuiltinMethodType
 
-from linebot.models.flex_message import FlexSendMessage
-
 if os.getenv('DEVELOPMENT') is not None:
     from dotenv import load_dotenv
 
@@ -17,7 +15,7 @@ from linebot.exceptions import *
 from linebot.models import *
 
 app = Flask(__name__)
-
+ 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET') or 'YOUR_SECRET'
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN') or 'YOUR_ACCESS_TOKEN'
@@ -112,11 +110,11 @@ def message_text(event):
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
                         ]),
@@ -126,11 +124,11 @@ def message_text(event):
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
                         ]),
@@ -140,11 +138,11 @@ def message_text(event):
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
                         ]),
@@ -154,11 +152,11 @@ def message_text(event):
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
                         ]),
@@ -175,16 +173,16 @@ def message_text(event):
 def handle_postback(event):
     action = event.postback.data
     if action == "$$美食&飲品$$":
-        rand = random.randint(1, len(food_list)+1)
+        rand = random.randint(1, len(food_list))
         replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
         output = TextSendMessage(text=replyContent)
     elif action == "$$原創商品$$":
-        rand = random.randint(1, len(origin_list)+1)
+        rand = random.randint(1, len(origin_list))
         replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
         output = TextSendMessage(text=replyContent)
     elif action == "$$旅館$$":
-        rand = random.randint(1, len(hotel_list)+1)
-        replyContent = "今天我推薦來點" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
+        rand = random.randint(1, len(hotel_list))
+        replyContent = "今天我推薦住在" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
         output = TextSendMessage(text=replyContent)
 
     

@@ -1,6 +1,5 @@
 import os
-
-from linebot.models.flex_message import FlexSendMessage
+from types import BuiltinMethodType
 
 if os.getenv('DEVELOPMENT') is not None:
     from dotenv import load_dotenv
@@ -16,7 +15,7 @@ from linebot.exceptions import *
 from linebot.models import *
 
 app = Flask(__name__)
-
+ 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET') or 'YOUR_SECRET'
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN') or 'YOUR_ACCESS_TOKEN'
@@ -31,6 +30,24 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+food_list = []
+with open("food.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for food in rows:
+        food_list.append(food)
+
+origin_list = []
+with open("origin.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for origin in rows:
+        origin_list.append(origin)
+
+hotel_list = []
+with open("hotel.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for hotel in rows:
+        hotel_list.append(hotel)
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -39,7 +56,7 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    # app.logger.info("Request body: " + body)
 
     # handle webhook body
     try:
@@ -52,30 +69,31 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     action = event.message.text
-    if action=="start":
+    if action=="Start" or action=="start":
         output = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text="hello",
             template=ButtonsTemplate(
                 thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                 title='鐵花村嚮導',
-                text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧~~',
+                text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
                 actions=[
                     PostbackAction(
-                        label='Eating',
-                        data='$$Eating$$'
+                        label='美食&飲品',
+                        data='$$美食&飲品$$'
                     ),
                     PostbackAction(
-                        label='Drinking',
-                        data='$$Drinking$$'
+                        label='原創商品',
+                        data='$$原創商品$$'
                     ),
                     PostbackAction(
-                        label='Dressing',
-                        data='$$Dressing$$'
+                        label='旅館',
+                        data='$$旅館$$'
                     ),
-                    PostbackAction(
-                        label='Hotels',
-                        data='$$Hotels$$'
-                    )],
+                    URIAction(
+                        label = '表演時程表',
+                        uri="http://www.tiehua.com.tw/calendar.php?p="
+                    )
+                ],
                 default_action=URIAction(
                     uri="https://www.facebook.com/tiehua/"
                 )
@@ -92,60 +110,56 @@ def message_text(event):
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '國旅券',
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '動滋券',
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                     CarouselColumn(
                         thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                         title = '藝fun券',
                         text = '您還有        點',
                         actions=[
                             PostbackAction(
-                                label='Eating',
+                                label='使用',
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='Eating',
+                                label='儲存',
                                 data='$$Eating$$'
                             ),
-                        ]
-                    ),
+                        ]),
                 ]
             )
         )
@@ -158,49 +172,24 @@ def message_text(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     action = event.postback.data
-    if action == "$$Eating$$":
-        links = {
-            "炒上鮮平價熱炒" : "https://spot.line.me/detail/486251123917723842",
-            "何家寨土雞城" : "https://spot.line.me/detail/486257421489019364",
-            "圓圓小吃店" : "https://spot.line.me/detail/486257089434360139",
-        }
-        repo = [
-            "炒上鮮平價熱炒",
-            "何家寨土雞城",
-            "圓圓小吃店",
-        ]
-        now = random.randint(0,2)
-        replyContent = "今天我推薦來點" + repo[now] +"\n" +links[repo[now]]
+    if action == "$$美食&飲品$$":
+        rand = random.randint(1, len(food_list))
+        replyContent = "今天我推薦來點" + food_list[rand][0] +"\n" +food_list[rand][1]
         output = TextSendMessage(text=replyContent)
-    elif action == "$$Drinking$$":
-        output = TextSendMessage(text="賣喝的")
-    elif action == "$$Dressing$$":
-        output = TextSendMessage(text="賣穿的")
-    elif action == "$$Hotels$$":
-        output = TextSendMessage(text="賣住的")
+    elif action == "$$原創商品$$":
+        rand = random.randint(1, len(origin_list))
+        replyContent = "今天我推薦來點" + origin_list[rand][0] +"\n" +origin_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+    elif action == "$$旅館$$":
+        rand = random.randint(1, len(hotel_list))
+        replyContent = "今天我推薦住在" + hotel_list[rand][0] +"\n" +hotel_list[rand][1]
+        output = TextSendMessage(text=replyContent)
+
     
     line_bot_api.reply_message(
         event.reply_token,
         output
     )
-
-
-
-# CSV Example
-# import csv
-# @handler.add(MessageEvent, message=TextMessage)
-# def message_text(event):
-#     rows_list = []
-#     with open(os.path.abspath("maskdata.csv"), newline='') as csvfile:
-#         rows = csv.reader(csvfile, delimiter=',')
-#         for row in rows:
-#             rows_list.append(row)
-#
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text=str(rows_list[1]))
-#     )
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
