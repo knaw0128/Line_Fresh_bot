@@ -122,7 +122,7 @@ def handle_postback(event):
             template = CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url='https://imgur.com/mhO5Tvf',
+                        thumbnail_image_url='https://imgur.com/5wPPLxb',
                         title = '好食券',
                         text = '您剩餘    張',
                         actions=[
@@ -136,7 +136,7 @@ def handle_postback(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://imgur.com/1bAcDW7',
+                        thumbnail_image_url='https://imgur.com/UusvBQG',
                         title = '國旅券',
                         text = '您剩餘    張',
                         actions=[
@@ -150,7 +150,7 @@ def handle_postback(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://imgur.com/undefined',
+                        thumbnail_image_url='https://imgur.com/0mR3d9i',
                         title = '動滋券',
                         text = '您剩餘    張',
                         actions=[
@@ -164,7 +164,7 @@ def handle_postback(event):
                             ),
                         ]),
                     CarouselColumn(
-                        thumbnail_image_url='https://imgur.com/a/KCT1qKY',
+                        thumbnail_image_url='https://imgur.com/u0yZEyl',
                         title = '藝fun券',
                         text = '您剩餘    張',
                         actions=[
