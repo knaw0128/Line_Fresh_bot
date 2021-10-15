@@ -48,6 +48,8 @@ with open("./csv_file/hotel.csv", encoding='UTF-8') as csvfile:
     for hotel in rows:
         hotel_list.append(hotel)
 
+singer_list = []
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -71,7 +73,7 @@ def message_text(event):
     action = event.message.text
     if action=="Start" or action=="start":
         output = TemplateSendMessage(
-            alt_text="hello",
+            alt_text="開始探索",
             template=ButtonsTemplate(
                 thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
                 title='鐵花村嚮導',
@@ -89,10 +91,10 @@ def message_text(event):
                         label='優惠券',
                         data='$$優惠券$$'
                     ),
-                    URIAction(
-                        label = '表演時程表',
-                        uri="http://www.tiehua.com.tw/calendar.php?p="
-                    )
+                    PostbackAction(
+                        label='音樂聚落',
+                        data='$$音樂聚落$$'
+                    ),
                 ],
                 default_action=URIAction(
                     uri="https://www.facebook.com/tiehua/"
@@ -118,7 +120,7 @@ def handle_postback(event):
         output = TextSendMessage(text=replyContent)
     elif action == "$$優惠券$$":
         output = TemplateSendMessage(
-            alt_text='TemplateSendMessage template',
+            alt_text='查看優惠券',
             template = CarouselTemplate(
                 columns=[
                     CarouselColumn(
@@ -178,6 +180,68 @@ def handle_postback(event):
                             ),
                         ]),
                 ]
+            )
+        )
+    elif action == "$$音樂人介紹$$":
+        output = TemplateSendMessage(
+            alt_text='音樂人介紹',
+            template = ImageCarouselTemplate(
+                columns=[
+                    ImageCarouselColumn(
+                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        action=URIAction(
+                            label='音樂人001',
+                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                        )
+                    ),
+                    ImageCarouselColumn(
+                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        action=URIAction(
+                            label='音樂人002',
+                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                        )
+                    ),
+                    ImageCarouselColumn(
+                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        action=URIAction(
+                            label='音樂人003',
+                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                        )
+                    ),
+                    ImageCarouselColumn(
+                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        action=URIAction(
+                            label='音樂人004',
+                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                        )
+                    ),
+                ]
+            )
+        )
+    elif action == "$$音樂聚落$$":
+        output =  TemplateSendMessage(
+            alt_text="音樂聚落",
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://tour.taitung.gov.tw/image/827/1024x768',
+                title='音樂聚落',
+                text='臺東夜不寂寞，來到鐵花村音樂聚落\n享受山海文化孕育出澎湃的歌聲\n來喝上一杯鐵花吧的臺東特調吧！',
+                actions=[
+                    URIAction(
+                        label='加入社群',
+                        uri='https://line.me/ti/g2/5Y44ZfaIkAe33o5P1DLy4NnhzAdDZzlW7MBrKw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default'
+                    ),
+                    URIAction(
+                        label='暢遊音樂',
+                        uri='https://music-tw.line.me/playlist/273?playlistId=273'
+                    ),
+                    PostbackAction(
+                        label = '音樂人介紹',
+                        data = '$$音樂人介紹$$'
+                    ),
+                ],
+                default_action=URIAction(
+                    uri="http://www.tiehua.com.tw/calendar.php?p=5"
+                )
             )
         )
 
