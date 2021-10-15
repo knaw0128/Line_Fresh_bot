@@ -49,6 +49,10 @@ with open("./csv_file/hotel.csv", encoding='UTF-8') as csvfile:
         hotel_list.append(hotel)
 
 singer_list = []
+with open("./csv_file/singer.csv", encoding='UTF-8') as csvfile:
+    rows = csv.reader(csvfile)
+    for singer in rows:
+        singer_list.append(singer)
 
 
 @app.route("/callback", methods=['POST'])
@@ -183,36 +187,37 @@ def handle_postback(event):
             )
         )
     elif action == "$$音樂人介紹$$":
+        rand_list = [randint(1, len(singer_list)) for _ in range(4)]
         output = TemplateSendMessage(
             alt_text='音樂人介紹',
             template = ImageCarouselTemplate(
                 columns=[
                     ImageCarouselColumn(
-                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        image_url= singer_list[rand_list[0], 1],
                         action=URIAction(
-                            label='音樂人001',
-                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                            label= singer_list[rand_list[0], 0],
+                            uri = singer_list[rand_list[0], 2]
                         )
                     ),
                     ImageCarouselColumn(
-                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        image_url= singer_list[rand_list[1], 1],
                         action=URIAction(
-                            label='音樂人002',
-                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                            label= singer_list[rand_list[1], 0],
+                            uri = singer_list[rand_list[1], 2]
                         )
                     ),
                     ImageCarouselColumn(
-                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        image_url= singer_list[rand_list[2], 1],
                         action=URIAction(
-                            label='音樂人003',
-                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                            label= singer_list[rand_list[2], 0],
+                            uri = singer_list[rand_list[2], 2]
                         )
                     ),
                     ImageCarouselColumn(
-                        image_url= 'https://tour.taitung.gov.tw/image/827/1024x768',
+                        image_url= singer_list[rand_list[3], 1],
                         action=URIAction(
-                            label='音樂人004',
-                            uri = 'http://www.tiehua.com.tw/calendar.php?p=5'
+                            label= singer_list[rand_list[3], 0],
+                            uri = singer_list[rand_list[3], 2]
                         )
                     ),
                 ]
