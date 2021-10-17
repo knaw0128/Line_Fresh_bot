@@ -62,7 +62,6 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    # app.logger.info("Request body: " + body)
 
     # handle webhook body
     try:
@@ -75,7 +74,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     action = event.message.text
-    if '嚮導' in action:
+    if "嚮導" in action:
         output = TemplateSendMessage(
             alt_text="開始探索",
             template=ButtonsTemplate(
@@ -137,13 +136,13 @@ def handle_postback(event):
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='儲存',
+                                label='更多優惠資訊',
                                 data='$$Eating$$'
                             ),
                         ]),
                     CarouselColumn(
                         thumbnail_image_url='https://imgur.com/UusvBQG.png',
-                        title = '國旅券',
+                        title = '好喝券',
                         text = '您剩餘    張',
                         actions=[
                             PostbackAction(
@@ -151,13 +150,13 @@ def handle_postback(event):
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='儲存',
+                                label='更多優惠資訊',
                                 data='$$Eating$$'
                             ),
                         ]),
                     CarouselColumn(
                         thumbnail_image_url='https://imgur.com/0mR3d9i.png',
-                        title = '動滋券',
+                        title = '動聽券',
                         text = '您剩餘    張',
                         actions=[
                             PostbackAction(
@@ -165,13 +164,13 @@ def handle_postback(event):
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='儲存',
+                                label='更多優惠資訊',
                                 data='$$Eating$$'
                             ),
                         ]),
                     CarouselColumn(
                         thumbnail_image_url='https://imgur.com/u0yZEyl.png',
-                        title = '藝fun券',
+                        title = '好穿券',
                         text = '您剩餘    張',
                         actions=[
                             PostbackAction(
@@ -179,7 +178,7 @@ def handle_postback(event):
                                 data='$$Eating$$'
                             ),
                             PostbackAction(
-                                label='儲存',
+                                label='更多優惠資訊',
                                 data='$$Eating$$'
                             ),
                         ]),
